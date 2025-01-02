@@ -1,0 +1,57 @@
+//Approach 1:
+
+class Solution {
+public:
+    int virtualIndex(int index, int n) {
+    return (2 * index + 1) % (n | 1);
+}
+
+// Wiggle sort in O(n) time and O(1) space
+void wiggleSort(vector<int>& nums) {
+    int n = nums.size();
+    
+    // Step 1: Find the median using nth_element (Quickselect)
+    auto midIt = nums.begin() + n / 2;
+    nth_element(nums.begin(), midIt, nums.end());
+    int median = *midIt;
+
+    // Step 2: Three-way partitioning using virtual index mapping
+    int left = 0, right = n - 1, i = 0;
+    while (i <= right) {
+        int vi = virtualIndex(i, n);
+        if (nums[vi] > median) {
+            swap(nums[virtualIndex(left++, n)], nums[vi]);
+            i++;
+        } else if (nums[vi] < median) {
+            swap(nums[virtualIndex(right--, n)], nums[vi]);
+        } else {
+            i++;
+        }
+    }
+}
+};
+
+
+
+//Approach 2:
+
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+         vector<int> sorted(nums);
+    sort(sorted.begin(), sorted.end());
+    
+    int n = nums.size();
+    int mid = (n - 1) / 2; // Last index of the smaller half
+    int high = n - 1;      // Last index of the larger half
+
+    for (int i = 0; i < n; ++i) {
+        if (i % 2 == 0) {
+            nums[i] = sorted[mid--]; // Take from the smaller half
+        } else {
+            nums[i] = sorted[high--]; // Take from the larger half
+        }
+    }
+    }
+};
+

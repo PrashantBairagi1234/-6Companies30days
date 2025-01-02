@@ -1,0 +1,43 @@
+class Solution {
+public:
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
+        vector<vector<long long>> matrix(26, vector<long long>(26, 1e9));
+        
+        // Initialize the matrix with the transformation costs
+        int n = original.size();
+        for (int i = 0; i < n; ++i) {
+            int s = original[i] - 'a';
+            int d = changed[i] - 'a';
+            matrix[s][d] = min(matrix[s][d], (long long)cost[i]);
+        }
+
+        // Floyd-Warshall algorithm to find the shortest path between all pairs of characters
+        for (int k = 0; k < 26; ++k) {
+            for (int i = 0; i < 26; ++i) {
+                for (int j = 0; j < 26; ++j) {
+                    matrix[i][j] = min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+                }
+            }
+        }
+
+        // Now calculate the cost to transform source into target
+        long long res = 0;
+        for (int i = 0; i < source.size(); ++i) {
+
+            if(source[i]==target[i])continue;
+            int s = source[i] - 'a';
+            int t = target[i] - 'a';
+            
+            // If there's no valid transformation, return -1
+            
+            if (matrix[s][t] == 1e9) {
+                return -1;
+            }
+            
+            // Accumulate the minimum cost for the transformation
+            res += matrix[s][t];
+        }
+
+        return res;
+    }
+};
