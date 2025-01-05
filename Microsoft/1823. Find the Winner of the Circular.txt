@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+    int winner = 0; // Base case: 0-indexed winner for 1 person
+    for (int i = 2; i <= n; i++) {
+        winner = (winner + k) % i;
+    }
+    return winner + 1; // Convert to 1-indexed result
+}
+
+};
+
+
+Approach 2:
+
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        vector<int> arr;
+        for(int i = 0; i < n; i++) {
+            arr.push_back(i + 1);
+        }
+        
+        int idx = 0;
+        while (arr.size() > 1) {
+            idx = (idx + k - 1) % arr.size(); // find the index to eliminate
+            arr.erase(arr.begin() + idx); // eliminate the player
+        }
+        
+        return arr[0]; // the last remaining player is the winner
+    }
+};

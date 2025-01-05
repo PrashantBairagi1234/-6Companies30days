@@ -1,0 +1,49 @@
+class Solution {
+public:
+    // Function to check if a string is a palindrome
+    bool isPalindrome(const std::string& str) {
+        int left = 0, right = str.length() - 1;
+        while (left < right) {
+            if (!std::isalnum(str[left])) {
+                ++left;
+            } else if (!std::isalnum(str[right])) {
+                --right;
+            } else if (std::tolower(str[left]) != std::tolower(str[right])) {
+                return false;
+            } else {
+                ++left;
+                --right;
+            }
+        }
+        return true;
+    }
+
+    // Recursive function
+    void findMaxProduct(int ind, const string &s, string &t1, string &t2, int &maxProduct) {
+        if (ind >= s.length()) {
+            if (isPalindrome(t1) && isPalindrome(t2)) {
+                maxProduct = std::max(maxProduct, (int)(t1.length() * t2.length()));
+            }
+            return;
+        }
+        // Include the current character in t1
+        t1.push_back(s[ind]);
+        findMaxProduct(ind + 1, s, t1, t2, maxProduct);
+        t1.pop_back();
+
+        // Include the current character in t2
+        t2.push_back(s[ind]);
+        findMaxProduct(ind + 1, s, t1, t2, maxProduct);
+        t2.pop_back();
+
+        // Skip the current character
+        findMaxProduct(ind + 1, s, t1, t2, maxProduct);
+    }
+
+    int maxProduct(string s) {
+        string t1 = "", t2 = "";
+        int maxProduct = 0;
+        findMaxProduct(0, s, t1, t2, maxProduct);
+        return maxProduct;
+    }
+};

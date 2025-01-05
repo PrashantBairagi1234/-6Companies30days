@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int>> imageSmoother(vector<vector<int>>& img) {
+        int row = img.size();
+        int col = img[0].size();
+
+        vector<vector<int>> res(row, vector<int>(col, 0)); // Resultant matrix
+        int dx[] = {-1, 1, 0, 0, -1, -1, 1, 1}; // Row direction
+        int dy[] = {0, 0, -1, 1, -1, 1, -1, 1}; // Column direction
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                int val = img[i][j]; // Include the current cell
+                int cnt = 1;         // Count the current cell
+                for (int k = 0; k < 8; k++) {
+                    int newX = i + dx[k];
+                    int newY = j + dy[k];
+
+                    // Check if the new cell is within bounds
+                    if (newX >= 0 && newX < row && newY >= 0 && newY < col) {
+                        val += img[newX][newY];
+                        cnt++;
+                    }
+                }
+                res[i][j] = val / cnt; // Store the average value in the result matrix
+            }
+        }
+
+        return res;
+    }
+};
