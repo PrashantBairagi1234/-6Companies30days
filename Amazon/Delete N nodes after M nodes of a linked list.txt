@@ -1,0 +1,33 @@
+class Solution {
+public:
+    Node* linkdelete(Node* head, int n, int m) {
+        Node* curr = head;
+        Node* newH = new Node(-1);
+        newH->next = curr;
+
+        while (curr) {
+            // Skip `m` nodes
+            int skip = m;
+            while (skip > 1 && curr) { // Skip `m - 1` nodes
+                curr = curr->next;
+                skip--;
+            }
+
+            if (!curr) break; // If we reach the end, stop
+
+            // Start deleting `n` nodes
+            Node* temp = curr->next;
+            int del = n;
+            while (del > 0 && temp) {
+                temp = temp->next;
+                del--;
+            }
+
+            // Link the remaining part of the list
+            curr->next = temp;
+            curr = temp; // Move `curr` forward
+        }
+
+        return newH->next;
+    }
+};

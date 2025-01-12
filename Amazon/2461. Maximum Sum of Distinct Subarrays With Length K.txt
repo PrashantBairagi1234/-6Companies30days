@@ -1,0 +1,34 @@
+class Solution {
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+        long long maxi = 0; // To store the maximum sum
+        long long curr_sum = 0; // Current subarray sum
+        unordered_set<int> st; // To track distinct elements
+        int i = 0, n = nums.size();
+
+        for (int j = 0; j < n; j++) {
+            // Shrink the window until nums[j] becomes distinct
+            while (st.count(nums[j])) {
+                curr_sum -= nums[i];
+                st.erase(nums[i]);
+                i++;
+            }
+
+            // Add the current element to the set and sum
+            st.insert(nums[j]);
+            curr_sum += nums[j];
+
+            // Check if the window size equals k
+            if (j - i + 1 == k) {
+                maxi = max(maxi, curr_sum);
+
+                // Shrink the window from the left to maintain the size
+                curr_sum -= nums[i];
+                st.erase(nums[i]);
+                i++;
+            }
+        }
+
+        return maxi;
+    }
+};

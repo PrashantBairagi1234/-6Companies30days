@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<string>> displayContacts(int n, string contact[], string s) {
+        vector<vector<string>> res;
+
+        // Insert contacts into a set to remove duplicates and sort them
+        set<string> s1(contact, contact + n);
+
+        string temp = ""; // Prefix string
+        for (char c : s) {
+            temp += c; // Build the prefix character by character
+            vector<string> v;
+
+            // Find all contacts starting with the current prefix
+            for (const auto& st : s1) {
+                if (st.rfind(temp, 0) == 0) { // Check if the prefix matches the start
+                    v.push_back(st);
+                }
+            }
+
+            // If no matches, add "0"
+            if (v.empty()) {
+                res.push_back({"0"});
+            } else {
+                res.push_back(v);
+            }
+        }
+
+        return res;
+    }
+};

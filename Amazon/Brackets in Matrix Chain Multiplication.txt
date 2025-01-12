@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    string matrixChainOrderRecursive(vector<int> &arr, int i, int j) {
+    // Base case: if there's only one matrix
+    if (i == j) {
+        return string(1, 'A' + (i - 1)); // Return the matrix name (A-Z)
+    }
+
+    int minCost = INT_MAX;
+    string result;
+
+    // Try splitting at every possible point
+    for (int k = i; k < j; k++) {
+        // Recursively solve the two subproblems
+        string left = matrixChainOrderRecursive(arr, i, k);
+        string right = matrixChainOrderRecursive(arr, k + 1, j);
+
+        // Calculate the cost for this split
+        int cost = (arr[i - 1] * arr[k] * arr[j]); // Cost of multiplying two matrices
+
+        // Update the result if we find a smaller cost
+        if (cost < minCost) {
+            minCost = cost;
+            result = "(" + left + right + ")";
+        }
+    }
+
+    return result;
+}
+    string matrixChainOrder(vector<int> &arr) {
+        int n = arr.size();
+
+    string result = matrixChainOrderRecursive(arr, 1, n - 1);
+    return result;
+    }
+};

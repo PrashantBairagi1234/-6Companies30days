@@ -1,0 +1,21 @@
+class Solution {
+public:
+    void matchPairs(int n, char nuts[], char bolts[]) {
+        // Predefined valid characters in the required order
+        vector<char> order = {'!', '#', '$', '%', '&', '*', '?', '@', '^'};
+        
+        // Use a set to store the nuts for quick lookup
+        set<char> nutSet(nuts, nuts + n);
+        
+        int index = 0;
+        for (char c : order) {
+            // Check if the character exists in the nuts
+            if (nutSet.find(c) != nutSet.end()) {
+                // If found, set it in both nuts and bolts arrays
+                nuts[index] = c;
+                bolts[index] = c;
+                index++;
+            }
+        }
+    }
+};
